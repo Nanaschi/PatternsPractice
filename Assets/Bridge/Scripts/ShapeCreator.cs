@@ -10,11 +10,13 @@ public class ShapeCreator : MonoBehaviour
     [SerializeField] private Vector3 _size;
     private Shape _shape;
     [SerializeField] private Shapes _shapes;
+
     enum Shapes
     {
-        Square, Circle
+        Square,
+        Circle
     }
-    
+
     private void Awake()
     {
         var scalable = new Scalable();
@@ -77,6 +79,12 @@ public abstract class Shape
     }
 
     public abstract GameObject DrawShape(Color color, Vector3 vector3);
+
+    protected void SetColorAndSize(GameObject gameObject, Color color, Vector3 vector3)
+    {
+        _colorable.PaintColor(color, gameObject.GetComponent<Renderer>().material);
+        _scalable.ChangeSize(vector3, gameObject.transform);
+    }
 }
 
 public class Square : Shape
@@ -92,9 +100,9 @@ public class Square : Shape
     public override GameObject DrawShape(Color color, Vector3 vector3)
     {
         var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-    
-        _colorable.PaintColor(color,  cube.GetComponent<Renderer>().material);
-        _scalable.ChangeSize(vector3, cube.transform);
+
+
+        SetColorAndSize(cube, color, vector3);
         return cube;
     }
 }
@@ -112,9 +120,8 @@ public class Circle : Shape
     public override GameObject DrawShape(Color color, Vector3 vector3)
     {
         var cube = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-    
-        _colorable.PaintColor(color,  cube.GetComponent<Renderer>().material);
-        _scalable.ChangeSize(vector3, cube.transform);
+
+        SetColorAndSize(cube, color, vector3);
         return cube;
     }
 }
